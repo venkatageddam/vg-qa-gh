@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh aw compile .github/workflows/user-story-evaluation-agent.md)",
+      "Bash(gh aw compile)",
+      "Bash(gh aw --help)",
+      "Bash(where gh)",
+      "Bash(gh --version)",
+      "Bash(gh extension list)",
+      "Bash(cmd /c \"gh --version\")",
+      "Bash(powershell -Command \"gh --version\")",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(git -C \"c:/Users/vgeddam/co-work-projects/vg-qa-gh\" status)",
+      "Bash(git -C \"c:/Users/vgeddam/co-work-projects/vg-qa-gh\" status --short)",
+      "Bash(powershell.exe -NoProfile -Command \"Set-Location ''c:\\\\Users\\\\vgeddam\\\\co-work-projects\\\\vg-qa-gh''; git status --short; git add ''.github/workflows/user-story-evaluation-agent.lock.yml''; git add ''.github/workflows/user-story-evaluation-agent.md''; git status --short\")",
+      "Bash(powershell.exe -Command \"Write-Output ''hello''\")",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_click"
+    ]
+  }
+}
