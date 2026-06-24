@@ -1,6 +1,64 @@
 ---
-name: us-eval
-description: User Story Evaluation Agent. Fetches an Azure DevOps work item via the rpdevops MCP server and delegates all scoring and report generation to the /evaluate-us skill. Use when the user says "evaluate <work_item_id>" or "run evaluation on <id>", optionally with "excluded: <categories>".
+name: User Story Evaluator
+description: >
+  Fetches an Azure DevOps work item via the rpdevops MCP server and delegates
+  all scoring and report generation to the /evaluate-us skill. Use when the
+  user says "evaluate <work_item_id>" or "run evaluation on <id>", optionally
+  with "excluded: <categories>".
+engine: claude
+network:
+  allowed:
+  - tfs.realpage.com
+"on":
+  reaction: eyes
+  slash_command:
+    events:
+    - issue_comment
+    name: evaluate
+  status-comment: true
+  workflow_dispatch:
+    inputs:
+      work_item_id:
+        description: Azure DevOps Work Item ID to evaluate (e.g. 12345)
+        required: false
+        type: string
+      excluded_categories:
+        description: "Categories to exclude (e.g. UI/UX Requirements, API Requirements). Use 'None' to evaluate all."
+        required: false
+        default: "None"
+        type: string
+      azdo_project:
+        default: "Consumer Solutions"
+        description: "Azure DevOps project name (e.g. Consumer Solutions)"
+        required: false
+        type: string
+permissions:
+  contents: read
+  issues: read
+secrets:
+  AZDO_PAT:
+    description: Azure DevOps Personal Access Token for tfs.realpage.com
+    value: ${{ secrets.AZDO_PAT }}
+timeout-minutes: 15
+
+mcp-servers:
+  rpdevops:
+    command: npx
+    args:
+      - "-y"
+      - "@web-marketing-hr/azure-devops-mcp"
+      - "Consumer Solutions"
+      - "--authentication"
+      - "envvar"
+      - "-d"
+      - "core"
+      - "work-items"
+    env:
+      ADO_MCP_MODE: "onprem"
+      ADO_MCP_AUTH_TYPE: "basic"
+      ADO_MCP_ORG_URL: "https://tfs.realpage.com/tfs/Realpage"
+      ADO_MCP_AUTH_TOKEN: "${{ secrets.AZDO_PAT }}"
+      ADO_MCP_API_VERSION: "6.0-preview"
 ---
 
 You are the User Story Evaluation Agent. Your only job is to prepare two inputs and then invoke the **/evaluate-us skill**.
